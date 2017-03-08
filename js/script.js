@@ -159,39 +159,46 @@ class Game {
     }
   }
 
+  initEventListener() {
+    document.addEventListener("keydown", this.keyDownHandler , false);
+    document.addEventListener("keyup", this.keyUpHandler , false);
+    document.addEventListener("mousemove", this.mouseMoveHandler , false);
+  }
+
+  keyDownHandler(e) {
+    if(e.keyCode == 39) {
+      game.rightPressed = true;
+    } else if(e.keyCode == 37) {
+      game.leftPressed = true;game
+    }
+  }
+
+  keyUpHandler(e) {
+    if(e.keyCode == 39) {
+      game.rightPressed = false;
+    } else if(e.keyCode == 37) {
+      game.leftPressed = false;
+    }
+  }
+
+  mouseMoveHandler(e) {
+
+    let relativeX = e.clientX - game.canvas.offsetLeft;
+    if(relativeX > 0 && relativeX < game.canvas.width) {
+      game.paddleX = relativeX - game.paddleWidth/2;
+    }
+  }
+
+  init() {
+    this.briksArrayTemplate();
+    this.initEventListener();
+  }
+
 }
 
 let game  = new Game();
 
-game.briksArrayTemplate();
-
-document.addEventListener("keydown", keyDownHandler , false);
-document.addEventListener("keyup", keyUpHandler , false);
-document.addEventListener("mousemove", mouseMoveHandler , false);
-
-function keyDownHandler(e) {
-  if(e.keyCode == 39) {
-    game.rightPressed = true;
-  } else if(e.keyCode == 37) {
-    game.leftPressed = true;game
-  }
-}
-
-function keyUpHandler(e) {
-  if(e.keyCode == 39) {
-    game.rightPressed = false;
-  } else if(e.keyCode == 37) {
-    game.leftPressed = false;
-  }
-}
-
-function mouseMoveHandler(e) {
-
-  let relativeX = e.clientX - game.canvas.offsetLeft;
-  if(relativeX > 0 && relativeX < game.canvas.width) {
-    game.paddleX = relativeX - game.paddleWidth/2;
-  }
-}
+game.init();
 
 setInterval( function(){ game.draw(); }, 10);
 
